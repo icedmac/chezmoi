@@ -24,7 +24,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
 export PATH="$HOME/.local/bin:$PATH"
 
 # 2. Initialiser avec mon dépôt
-chezmoi init git@github.com:icedmac/chezmoi.git
+chezmoi init https://github.com/icedmac/chezmoi.git
 
 # 3. Appliquer la configuration
 chezmoi apply -v

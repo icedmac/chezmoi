@@ -1,0 +1,16 @@
+apt:
+  - zsh
+  - git
+  - curl
+  - wget
+  - unzip
+  - zip
+  - fzf
+  - ca-certificates
+  - build-essential
+
+npm:
+  - "@anthropic-ai/claude-code"
+
+node:
+  version: "22"

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# checksum: {{ (printf "%s|%s|%s" (include ".chezmoidata/packages.yaml") .node.version .chezmoi.os) | sha256sum }}
+
+# Installer NVM si absent
+if [ ! -d "$HOME/.nvm" ]; then
+  echo "[NVM] install"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+fi
+
+# Charger NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# Installer/activer la version souhaitée
+TARGET="{{ .node.version }}"
+if ! nvm ls "$TARGET" >/dev/null 2>&1; then
+  echo "[Node] install $TARGET"
+  nvm install "$TARGET"
+fi
+
+nvm alias default "$TARGET" >/dev/null 2>&1 || true
+nvm use default >/dev/null 2>&1 || true
+
+echo "[Node] $(command -v node >/dev/null 2>&1 && node -v || echo 'absent')"
+echo "[npm ] $(command -v npm  >/dev/null 2>&1 && npm -v  || echo 'absent')"

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# checksum: {{ (printf "%s|%s" (include ".chezmoidata/packages.yaml") .chezmoi.os) | sha256sum }}
+
+if command -v zsh >/dev/null 2>&1 && [ "${SHELL:-}" != "$(command -v zsh)" ]; then
+  echo "[SHELL] set default to zsh"
+  if command -v chsh >/dev/null 2>&1; then
+    chsh -s "$(command -v zsh)" || true
+  fi
+fi

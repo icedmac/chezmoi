@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# checksum: {{ "ohmyzsh|autosuggestions|syntax-highlighting" | sha256sum }}
+
+# oh-my-zsh (non-interactif)
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  echo "[oh-my-zsh] installation (non-interactive)"
+  RUNZSH=no CHSH=no \
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+  echo "[oh-my-zsh] déjà présent, skip"
+fi
+
+# Plugins
+ZSH_CUSTOM_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+PLUGINS_DIR="$ZSH_CUSTOM_DIR/plugins"
+mkdir -p "$PLUGINS_DIR"
+
+# zsh-autosuggestions
+if [ ! -d "$PLUGINS_DIR/zsh-autosuggestions" ]; then
+  echo "[plugin] zsh-autosuggestions -> clone"
+  git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "$PLUGINS_DIR/zsh-autosuggestions"
+else
+  echo "[plugin] zsh-autosuggestions déjà présent, skip"
+fi
+
+# zsh-syntax-highlighting
+if [ ! -d "$PLUGINS_DIR/zsh-syntax-highlighting" ]; then
+  echo "[plugin] zsh-syntax-highlighting -> clone"
+  git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "$PLUGINS_DIR/zsh-syntax-highlighting"
+else
+  echo "[plugin] zsh-syntax-highlighting déjà présent, skip"
+fi
+
+echo "[ok] oh-my-zsh + plugins installés/à jour (sans modifier ton .zshrc)"

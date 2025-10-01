@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# checksum: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
+
+{{- if and (eq .chezmoi.os "linux") (lookPath "apt") }}
+echo "[APT] update + install (déclaratif via .chezmoidata/packages.yaml)"
+sudo apt update
+if [ {{ len .apt }} -gt 0 ]; then
+  sudo DEBIAN_FRONTEND=noninteractive apt install -y \
+{{- range $i, $pkg := .apt }}
+    {{ $pkg }}{{ if lt (add $i 1) (len $.apt) }} \{{ end }}
+{{- end }}
+fi
+{{- else }}
+echo "[APT] Ignoré (OS ou gestionnaire non compatibles)."
+{{- end }}

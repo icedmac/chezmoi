@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# checksum: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
+
+# Charger NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+nvm use default >/dev/null 2>&1 || true
+
+if command -v npm >/dev/null 2>&1 && [ {{ len .npm }} -gt 0 ]; then
+  echo "[NPM] global install/update"
+  npm install -g \
+{{- range $i, $pkg := .npm }}
+    {{ $pkg }}{{ if lt (add $i 1) (len $.npm) }} \{{ end }}
+{{- end }}
+else
+  echo "[NPM] ignoré (npm indisponible ou liste vide)."
+fi

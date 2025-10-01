@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# checksum: {{ "powerlevel10k" | sha256sum }}
+
+ZSH_CUSTOM_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+THEMES_DIR="$ZSH_CUSTOM_DIR/themes"
+mkdir -p "$THEMES_DIR"
+
+if [ ! -d "$THEMES_DIR/powerlevel10k" ]; then
+  echo "[theme] powerlevel10k -> clone"
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$THEMES_DIR/powerlevel10k"
+else
+  echo "[theme] powerlevel10k déjà présent, skip"
+fi

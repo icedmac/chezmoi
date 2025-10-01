@@ -5,7 +5,7 @@ set -euo pipefail
 # oh-my-zsh (non-interactif)
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   echo "[oh-my-zsh] installation (non-interactive)"
-  RUNZSH=no CHSH=no \
+  RUNZSH=no CHSH=no KEEP_ZSHRC=yes \
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
   echo "[oh-my-zsh] déjà présent, skip"
